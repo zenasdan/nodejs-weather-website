@@ -1,12 +1,14 @@
 const request = require('postman-request');
+const { ps_key } = require('../utils/config');
 
 const geocode = (address, callback) => {
-    const url = `http://api.positionstack.com/v1/forward?access_key=${accessKey}&query=${encodeURIComponent(address)}&limit=1&output=json`;
+    const url = `http://api.positionstack.com/v1/forward?access_key=${ps_key}&query=${encodeURIComponent(address)}&limit=1&output=json`;
 
     request({ url, json: true }, (error, { body } = {}) => {
         if (error) {
             callback('Unable to connect to geocoding service!', undefined);
         } else if (body.error) {
+            console.log(body.error)
             callback('Unable to find coordinates. Try another search.', undefined);
         } else if (body.data.length === 0) {
             callback("Unable to find location.", undefined);
